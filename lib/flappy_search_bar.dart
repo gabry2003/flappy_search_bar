@@ -1,4 +1,4 @@
-library flappy_search_bar;
+library flappysearch_bar;
 
 import 'dart:async';
 
@@ -23,7 +23,7 @@ class SearchBarController<T> {
   final List<T> _list = [];
   final List<T> _filteredList = [];
   final List<T> _sortedList = [];
-  TextEditingController _searchQueryController;
+  TextEditingController searchQueryController;
   String _lastSearchedText;
   Future<List<T>> Function(String text) _lastSearchFunction;
   _ControllerListener _controllerListener;
@@ -31,8 +31,8 @@ class SearchBarController<T> {
   CancelableOperation _cancelableOperation;
   int minimumChars;
 
-  void setTextController(TextEditingController _searchQueryController, minimunChars) {
-    this._searchQueryController = _searchQueryController;
+  void setTextController(TextEditingController searchQueryController, minimunChars) {
+    this.searchQueryController = searchQueryController;
     this.minimumChars = minimunChars;
   }
 
@@ -44,7 +44,7 @@ class SearchBarController<T> {
     _controllerListener?.onClear();
   }
 
-  void _search(
+  void search(
       String text, Future<List<T>> Function(String text) onSearch) async {
     _controllerListener?.onLoading();
     try {
@@ -75,14 +75,14 @@ class SearchBarController<T> {
   void injectSearch(
       String searchText, Future<List<T>> Function(String text) onSearch) {
     if (searchText != null && searchText.length >= minimumChars) {
-      _searchQueryController.text = searchText;
-      _search(searchText, onSearch);
+      searchQueryController.text = searchText;
+      search(searchText, onSearch);
     }
   }
 
   void replayLastSearch() {
     if (_lastSearchFunction != null && _lastSearchedText != null) {
-      _search(_lastSearchedText, _lastSearchFunction);
+      search(_lastSearchedText, _lastSearchFunction);
     }
   }
 
@@ -249,14 +249,14 @@ class SearchBar<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SearchBarState createState() => _SearchBarState<T>();
+  searchBarState createState() => searchBarState<T>();
 }
 
-class _SearchBarState<T> extends State<SearchBar<T>>
+class searchBarState<T> extends State<SearchBar<T>>
     with TickerProviderStateMixin, _ControllerListener<T> {
   bool _loading = false;
   Widget _error;
-  final _searchQueryController = TextEditingController();
+  final searchQueryController = TextEditingController();
   Timer _debounce;
   bool _animate = false;
   List<T> _list = [];
@@ -268,7 +268,7 @@ class _SearchBarState<T> extends State<SearchBar<T>>
     searchBarController =
         widget.searchBarController ?? SearchBarController<T>();
     searchBarController.setListener(this);
-    searchBarController.setTextController(_searchQueryController, widget.minimumChars);
+    searchBarController.setTextController(searchQueryController, widget.minimumChars);
   }
 
   @override
@@ -308,7 +308,7 @@ class _SearchBarState<T> extends State<SearchBar<T>>
 
     _debounce = Timer(widget.debounceDuration, () async {
       if (newText.length >= widget.minimumChars && widget.onSearch != null) {
-        searchBarController._search(newText, widget.onSearch);
+        searchBarController.search(newText, widget.onSearch);
       } else {
         setState(() {
           _list.clear();
@@ -326,7 +326,7 @@ class _SearchBarState<T> extends State<SearchBar<T>>
     }
 
     setState(() {
-      _searchQueryController.clear();
+      searchQueryController.clear();
       _list.clear();
       _error = null;
       _loading = false;
@@ -360,7 +360,7 @@ class _SearchBarState<T> extends State<SearchBar<T>>
       return _error;
     } else if (_loading) {
       return widget.loader;
-    } else if (_searchQueryController.text.length < widget.minimumChars) {
+    } else if (searchQueryController.text.length < widget.minimumChars) {
       if (widget.placeHolder != null) return widget.placeHolder;
       return _buildListView(
           widget.suggestions, widget.buildSuggestion ?? widget.onItemFound);
@@ -396,7 +396,7 @@ class _SearchBarState<T> extends State<SearchBar<T>>
                       padding: widget.searchBarStyle.padding,
                       child: Theme(
                         child: TextField(
-                          controller: _searchQueryController,
+                          controller: searchQueryController,
                           onChanged: _onTextChanged,
                           style: widget.textStyle,
                           decoration: InputDecoration(
