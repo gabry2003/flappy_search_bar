@@ -1,16 +1,17 @@
 name: flappy_search_bar
-description: A SearchBar widget automatizing most of your asynchronous searchs cases.
-version: 1.7.2
+description: A SearchBar widget automatizing most of your asynchronous searchs cases. Fork from smartnsoft package
+version: 1.8.0
 homepage: https://github.com/smartnsoft/flappy_search_bar
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   async: ^2.2.0
-  flutter_staggered_grid_view: ^0.3.0
+  flutter_staggered_grid_view: ^0.6.1
+  grid_staggered_lite: ^0.0.6
 
 dev_dependencies:
   flutter_test:

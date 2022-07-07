@@ -1,4 +1,4 @@
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:grid_staggered_lite/grid_staggered_lite.dart';
 
 /// Class only use in order to give access to StaggeredTile to users
 class ScaledTile extends StaggeredTile {
@@ -26,6 +26,6 @@ class ScaledTile extends StaggeredTile {
   /// [mainAxisCellCount] cells (inner spacings included).
   ScaledTile.count(
     int crossAxisCellCount,
-    num mainAxisCellCount,
+    double? mainAxisCellCount,
   ) : super.count(crossAxisCellCount, mainAxisCellCount);
 }
